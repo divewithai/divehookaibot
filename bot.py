@@ -61,10 +61,7 @@ def main():
     app.run_polling()
 
 if __name__ == "__main__":
-    main()
-    try:
-        response = client.responses.create(
-            model="gpt-5-mini",
+    main()            model="gpt-5-mini",
             input=prompt
         )
 
