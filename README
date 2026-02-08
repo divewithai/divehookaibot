@@ -1,0 +1,10 @@
+# Dive Hook AI 🤖
+
+Telegram AI bot to generate viral hooks, captions, hashtags & CTA
+for Instagram Reels and YouTube Shorts.
+
+Built with:
+- Python
+- python-telegram-bot
+- OpenAI API
+- Railway
