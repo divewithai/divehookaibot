@@ -80,29 +80,3 @@ if __name__ == "__main__":
             "❌ Error aa gaya.\n"
             "Thoda wait karo ya naya topic bhejo."
         )
-
-# ======================
-# MAIN
-# ======================
-def main():
-    app = ApplicationBuilder().token(8252502184:AAGSOXjz1FqQNTgAVk6_cJS9RnU58W5I56k).build()
-
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-
-    print("🚀 Dive Hook AI is running...")
-    app.run_polling()
-
-if __name__ == "__main__":
-    main()# ===== MAIN =====
-def main():
-    app = ApplicationBuilder().token(8252502184:AAGSOXjz1FqQNTgAVk6_cJS9RnU58W5I56k).build()
-
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-
-    print("🤖 Dive Hook AI is running...")
-    app.run_polling()
-
-if __name__ == "__main__":
-    main()
