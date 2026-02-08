@@ -10,61 +10,95 @@ from telegram.ext import (
 )
 from openai import OpenAI
 
-# ===== CONFIG =====
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+# ======================
+# CONFIG
+# ======================
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+OPENAI_API_KEY = os.getenv("OPENAI_KEY")
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+)
 
-# ===== COMMANDS =====
+# ======================
+# START COMMAND
+# ======================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "🚀 Welcome to Dive Hook AI\n\n"
-        "Sirf apna TOPIC bhejo aur main bana dunga:\n"
-        "🔥 Hooks\n📝 Captions\n#️⃣ Hashtags\n👉 CTA\n\n"
-        "Example:\nAI se paisa kaise kamaye"
+        "🚀 *Welcome to Dive Hook AI*\n\n"
+        "Main tumhara personal AI hoon jo:\n"
+        "🔥 Hooks\n"
+        "✍️ Captions\n"
+        "#️⃣ Viral Hashtags\n"
+        "👉 CTA\n\n"
+        "banata hoon Instagram Reels & YouTube Shorts ke liye.\n\n"
+        "👉 *Sirf apna TOPIC bhejo*",
+        parse_mode="Markdown"
     )
 
-# ===== MESSAGE HANDLER =====
+# ======================
+# HANDLE MESSAGE
+# ======================
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     topic = update.message.text
 
-    await update.message.reply_text("⚡ Content generate ho raha hai...")
+    wait_msg = await update.message.reply_text("⚡ Content generate ho raha hai...")
 
     prompt = f"""
-You are a viral content expert.
-Create Instagram Reels / YouTube Shorts content for this topic:
+Tum ek expert social media strategist ho.
 
 Topic: {topic}
 
-Give output in this format ONLY:
+Output strictly is format me do:
 
-🔥 Hooks (3 short hooks)
-📝 Caption (1 powerful caption)
-#️⃣ Hashtags (8–10 viral hashtags)
+🔥 HOOKS (5 short powerful hooks)
+
+✍️ CAPTIONS (2 captions)
+
 👉 CTA (1 strong CTA)
 
-Use Hinglish.
+#️⃣ VIRAL HASHTAGS (10 hashtags)
+
+Language: Hinglish
+Tone: Viral, confident, creator-focused
 """
 
     try:
         response = client.responses.create(
             model="gpt-5-mini",
-            input=prompt,
+            input=prompt
         )
 
-        output = response.output_text.strip()
-        await update.message.reply_text(output)
+        result = response.output_text.strip()
+
+        await wait_msg.delete()
+        await update.message.reply_text(result)
 
     except Exception as e:
         logging.error(e)
+        await wait_msg.delete()
         await update.message.reply_text(
-            "❌ Error aaya hai.\nThoda wait karo ya naya topic bhejo."
+            "❌ Error aa gaya.\n"
+            "Thoda wait karo ya naya topic bhejo."
         )
 
-# ===== MAIN =====
+# ======================
+# MAIN
+# ======================
+def main():
+    app = ApplicationBuilder().token(BOT_TOKEN).build()
+
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+
+    print("🚀 Dive Hook AI is running...")
+    app.run_polling()
+
+if __name__ == "__main__":
+    main()# ===== MAIN =====
 def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
