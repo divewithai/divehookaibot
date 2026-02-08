@@ -13,10 +13,10 @@ from openai import OpenAI
 # ======================
 # CONFIG
 # ======================
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-OPENAI_API_KEY = os.getenv("OPENAI_KEY")
+BOT_TOKEN = os.getenv(8252502184:AAGSOXjz1FqQNTgAVk6_cJS9RnU58W5I56k)
+OPENAI_API_KEY = os.getenv(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)
 
-client = OpenAI(api_key=OPENAI_API_KEY)
+client = OpenAI(api_key=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)
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -89,7 +89,7 @@ Tone: Viral, confident, creator-focused
 # MAIN
 # ======================
 def main():
-    app = ApplicationBuilder().token(BOT_TOKEN).build()
+    app = ApplicationBuilder().token(8252502184:AAGSOXjz1FqQNTgAVk6_cJS9RnU58W5I56k).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
@@ -100,7 +100,7 @@ def main():
 if __name__ == "__main__":
     main()# ===== MAIN =====
 def main():
-    app = ApplicationBuilder().token(BOT_TOKEN).build()
+    app = ApplicationBuilder().token(8252502184:AAGSOXjz1FqQNTgAVk6_cJS9RnU58W5I56k).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
