@@ -86,5 +86,4 @@ if __name__ == "__main__":
         await wait_msg.delete()
         await update.message.reply_text(
             "❌ Error aa gaya.\n"
-            "Thoda wait karo ya naya topic bhejo."
-        )
+            "Thoda wait karo ya naya topic bhejo)
