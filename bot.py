@@ -47,9 +47,9 @@ Give:
 
     try:
         response = client.responses.create(
-            model="gpt-4.1-mini",
-            input=prompt
-        )
+    model="gpt-4o-mini",
+    input=prompt
+)
 
         output = ""
         for item in response.output:
