@@ -61,10 +61,10 @@ Give:
         await update.message.reply_text(output.strip())
 
     except Exception as e:
-        logging.exception(e)
-        await update.message.reply_text(
-            "❌ Error aa gaya.\nThoda wait karo ya naya topic bhejo."
-        )
+    logging.exception(e)
+    await update.message.reply_text(
+        f"❌ OpenAI Error:\n{str(e)}"
+    )
 
 # ================= MAIN =================
 def main():
