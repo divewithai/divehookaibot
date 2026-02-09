@@ -10,61 +10,78 @@ from telegram.ext import (
 )
 from openai import OpenAI
 
-# ===== CONFIG =====
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+# ================= CONFIG =================
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+)
 
-# ===== COMMANDS =====
+# ================= START =================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "🚀 Welcome to Dive Hook AI\n\n"
-        "Sirf apna TOPIC bhejo aur main bana dunga:\n"
-        "🔥 Hooks\n📝 Captions\n#️⃣ Hashtags\n👉 CTA\n\n"
-        "Example:\nAI se paisa kaise kamaye"
+        "Main tumhara personal AI hoon jo:\n"
+        "🔥 Hooks\n✍️ Captions\n#️⃣ Viral Hashtags\n👉 CTA\n\n"
+        "Sirf apna TOPIC bhejo."
     )
 
-# ===== MESSAGE HANDLER =====
+# ================= MESSAGE HANDLER =================
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     topic = update.message.text
 
-    await update.message.reply_text("⚡ Content generate ho raha hai...")
+    try:
+        prompt = f"""
+Generate the following for Instagram Reels / YouTube Shorts:
 
-    prompt = f"""
-You are a viral content expert.
-Create Instagram Reels / YouTube Shorts content for this topic:
+1. 5 viral hooks
+2. 1 engaging caption
+3. 1 strong CTA
+4. 5 viral hashtags
 
 Topic: {topic}
-
-Give output in this format ONLY:
-
-🔥 Hooks (3 short hooks)
-📝 Caption (1 powerful caption)
-#️⃣ Hashtags (8–10 viral hashtags)
-👉 CTA (1 strong CTA)
-
-Use Hinglish.
+Language: Hinglish
 """
 
-    try:
         response = client.responses.create(
             model="gpt-5-mini",
-            input=prompt,
+            input=prompt
         )
 
-        output = response.output_text.strip()
-        await update.message.reply_text(output)
+        output = ""
+        for item in response.output:
+            if item["type"] == "message":
+                for content in item["content"]:
+                    if content["type"] == "output_text":
+                        output += content["text"]
 
-    except Exception as e:
-        logging.error(e)
+        if not output.strip():
+            raise ValueError("Empty response from OpenAI")
+
+        await update.message.reply_text(output.strip())
+
+    except Exception:
+        logging.exception("OpenAI Error")
         await update.message.reply_text(
-            "❌ Error aaya hai.\nThoda wait karo ya naya topic bhejo."
+            "❌ Error aa gaya.\nThoda wait karo ya naya topic bhejo."
         )
 
-# ===== MAIN =====
+# ================= MAIN =================
+def main():
+    app = ApplicationBuilder().token(BOT_TOKEN).build()
+
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+
+    print("🤖 Dive Hook AI is running...")
+    app.run_polling()
+
+if __name__ == "__main__":
+    main()# ===== MAIN =====
 def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
