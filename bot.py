@@ -48,8 +48,7 @@ Give:
     try:
         response = client.responses.create(
     model="gpt-4o-mini",
-    input=prompt
-)
+    input=prompt)
 
         output = ""
         for item in response.output:
@@ -63,8 +62,7 @@ Give:
     except Exception as e:
     logging.exception(e)
     await update.message.reply_text(
-        f"❌ OpenAI Error:\n{str(e)}"
-    )
+        f"❌ OpenAI Error:\n{str(e)}")
 
 # ================= MAIN =================
 def main():
