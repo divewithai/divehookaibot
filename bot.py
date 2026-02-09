@@ -81,6 +81,23 @@ def main():
     app.run_polling()
 
 if __name__ == "__main__":
+    main()    except Exception as e:
+        logging.exception(e)
+        await update.message.reply_text(
+            "❌ Error aa gaya.\nThoda wait karo ya naya topic bhejo."
+        )
+
+# ================= MAIN =================
+def main():
+    app = ApplicationBuilder().token(BOT_TOKEN).build()
+
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+
+    print("🤖 Dive Hook AI running...")
+    app.run_polling()
+
+if __name__ == "__main__":
     main()    except Exception:
         logging.exception("OpenAI Error")
         await update.message.reply_text(
